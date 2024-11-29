@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 
-use App\Exception\ViewException;
+use App\Exceptions\ViewException;
 
 class View
 {

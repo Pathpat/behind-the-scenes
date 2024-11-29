@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 
 use App\Config;
+use App\Container;
 use App\Router;
 
 
@@ -14,8 +15,8 @@ $dotenv->load();
 const STORAGE_PATH = __DIR__.'/../storage';
 const VIEW_PATH = __DIR__.'/../views';
 
-
-$router = new Router();
+$container = new Container();
+$router = new Router($container);
 
 $router
     ->get('/', [App\Controllers\HomeController::class, 'index'])
