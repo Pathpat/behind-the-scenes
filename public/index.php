@@ -5,11 +5,12 @@ declare(strict_types=1);
 
 use App\Config;
 use App\Container;
+use App\Controllers\GeneratorExampleController;
+use App\Controllers\HomeController;
 use App\Router;
 
-
-
 require __DIR__.'/../vendor/autoload.php';
+
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 const STORAGE_PATH = __DIR__.'/../storage';
@@ -19,7 +20,8 @@ $container = new Container();
 $router = new Router($container);
 
 $router
-    ->get('/', [App\Controllers\HomeController::class, 'index']);
+    ->get('/', [HomeController::class, 'index'])
+    ->get('/example/generator', [GeneratorExampleController::class, 'index']);
 
 
 (new App\App(
