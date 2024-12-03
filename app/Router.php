@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Exceptions\RouteException;
+use App\Attributes\Route;
 use App\Exceptions\RouteNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use ReflectionAttribute;
 
 class Router
 {
@@ -15,6 +18,34 @@ class Router
     {
     }
 
+    /**
+     * @param array $controllers
+     * @throws \ReflectionException
+     */
+    public function registerRoutesFromControllerAttributes(array $controllers): void
+    {
+        foreach ($controllers as $controller) {
+            $reflectionController = new \ReflectionClass($controller);
+
+            foreach ($reflectionController->getMethods() as $method) {
+                $attributes = $method->getAttributes(Route::class, ReflectionAttribute::IS_INSTANCEOF);
+
+                foreach ($attributes as $attribute) {
+                    $route = $attribute->newInstance();
+
+                    $this->register($route->method, $route->path, [$controller, $method->getName()]);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param  string          $methodRequest
+     * @param  string          $route
+     * @param  callable|array  $action
+     *
+     * @return $this
+     */
     public function register(
         string $methodRequest,
         string $route,
@@ -25,25 +56,46 @@ class Router
         return $this;
     }
 
+    /**
+     * @param  string          $route
+     * @param  callable|array  $action
+     *
+     * @return $this
+     */
     public function get(string $route, callable|array $action): self
     {
         return $this->register('get', $route, $action);
     }
 
+    /**
+     * @param  string          $route
+     * @param  callable|array  $action
+     *
+     * @return $this
+     */
     public function post(string $route, callable|array $action): self
     {
         return $this->register('post', $route, $action);
     }
 
+    /**
+     * @return array
+     */
     public function routes(): array
     {
         return $this->routes;
     }
 
     /**
-     * @throws RouteException
+     * @param  string  $requestUri
+     * @param  string  $requestMethod
+     *
+     * @return mixed
+     * @throws RouteNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function resolve(string $requestUri, string $requestMethod)
+    public function resolve(string $requestUri, string $requestMethod): mixed
     {
         $route = explode('?', $requestUri)[0];
         $action = $this->routes[$requestMethod][$route] ?? null;
