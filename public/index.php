@@ -8,6 +8,7 @@ use App\Container;
 use App\Controllers\GeneratorExampleController;
 use App\Controllers\HomeController;
 use App\Controllers\InvoiceController;
+use App\Controllers\UserController;
 use App\Router;
 
 require __DIR__.'/../vendor/autoload.php';
@@ -24,6 +25,7 @@ $router->registerRoutesFromControllerAttributes([
     HomeController::class,
     GeneratorExampleController::class,
     InvoiceController::class,
+    UserController::class,
 ]);
 
 (new App\App(
