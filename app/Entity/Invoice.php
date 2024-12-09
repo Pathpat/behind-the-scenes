@@ -29,8 +29,8 @@ class Invoice
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private \Datetime $createdAt;
 
-    #[ORM\Column(name: 'due_at', type: Types::DATETIME_MUTABLE)]
-    private \Datetime $dueAt;
+    #[ORM\Column(name: 'due_date', type: Types::DATETIME_MUTABLE)]
+    private \Datetime $dueDate;
 
     #[ORM\OneToMany(targetEntity: InvoiceItem::class, mappedBy: 'invoice', cascade: [
         'persist',

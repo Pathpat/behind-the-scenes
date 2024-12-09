@@ -5,7 +5,11 @@
         "symfony/mailer": "^7.2",
         "doctrine/dbal": "^4.2",
         "doctrine/orm": "^3.3",
-        "symfony/cache": "^7.2"
+        "symfony/cache": "^7.2",
+        "doctrine/migrations": "^3.8",
+        "illuminate/database": "^11.34",
+        "illuminate/events": "^11.34",
+        "laravel/serializable-closure": "^2.0"
     },
     "autoload": {
         "psr-4": {
