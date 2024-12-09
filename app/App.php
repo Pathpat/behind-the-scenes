@@ -5,14 +5,24 @@ declare(strict_types=1);
 namespace App;
 
 use App\Exceptions\RouteNotFoundException;
-use App\Services\PaymentGatewayInterface;
-use App\Services\StripePayment;
 use Dotenv\Dotenv;
+use Illuminate\Container\Container;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher;
 use Symfony\Component\Mailer\MailerInterface;
 
 class App
 {
-    private static DB $db;
+
+    public function initDb(array $config): void
+    {
+        $capsule = new Capsule();
+
+        $capsule->addConnection($config);
+        $capsule->setEventDispatcher(new Dispatcher($this->container));
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+    }
     private Config $config;
 
     public function __construct(
@@ -22,10 +32,6 @@ class App
     ) {
     }
 
-    public static function db(): DB
-    {
-        return static::$db;
-    }
 
     public function boot(): static
     {
@@ -34,13 +40,9 @@ class App
 
         $this->config = new Config($_ENV);
 
-        static::$db = new DB($this->config->db ?? []);
+       $this->initDb($this->config->db);
 
-        $this->container->set(
-            PaymentGatewayInterface::class,
-            StripePayment::class
-        );
-        $this->container->set(
+        $this->container->bind(
             MailerInterface::class,
             fn() => new CustomMailer($this->config->mailer['dsn'])
         );
