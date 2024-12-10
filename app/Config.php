@@ -16,17 +16,21 @@ class Config
     {
         $this->config = [
             'db' => [
-                'host'     => $_ENV['DB_HOST'],
-                'username'     => $_ENV['DB_USER'],
-                'password' => $_ENV['DB_PASS'],
-                'database'   => $_ENV['DB_DATABASE'],
-                'driver'   => $_ENV['DB_DRIVER'] ?? 'mysql',
+                'host'     => $env['DB_HOST'],
+                'username'     => $env['DB_USER'],
+                'password' => $env['DB_PASS'],
+                'database'   => $env['DB_DATABASE'],
+                'driver'   => $env['DB_DRIVER'] ?? 'mysql',
                 'charset'   => 'utf8',
                 'collation' => 'utf8_unicode_ci',
                 'prefix'    => '',
             ],
             'mailer' => [
                 'dsn' => $env['MAILER_DSN'] ?? '',
+            ],
+            'apiKeys' => [
+                'emailable' => $env['EMAILABLE_API_KEY'],
+                'abstract_api_email_validation' => $env['ABSTRACT_API_EMAIL_VALIDATION_API_KEY'],
             ]
         ];
     }
