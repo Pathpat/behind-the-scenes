@@ -9,7 +9,8 @@
         "doctrine/migrations": "^3.8",
         "illuminate/database": "^11.34",
         "illuminate/events": "^11.34",
-        "laravel/serializable-closure": "^2.0"
+        "laravel/serializable-closure": "^2.0",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "autoload": {
         "psr-4": {
