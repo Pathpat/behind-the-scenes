@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 
 use App\Controllers\CurlController;
-use App\Controllers\GeneratorExampleController;
 use App\Controllers\HomeController;
 use App\Controllers\InvoiceController;
-use App\Controllers\UserController;
 use App\Router;
 use Illuminate\Container\Container;
 
@@ -21,9 +19,7 @@ $router = new Router($container);
 
 $router->registerRoutesFromControllerAttributes([
     HomeController::class,
-    GeneratorExampleController::class,
     InvoiceController::class,
-    UserController::class,
     CurlController::class,
 ]);
 
