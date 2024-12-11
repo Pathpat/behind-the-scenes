@@ -6,7 +6,7 @@ namespace App;
 
 use App\Contracts\EmailValidationInterface;
 use App\Exceptions\RouteNotFoundException;
-use App\Services\AbstractApi\EmailValidationService;
+use App\Services\Emailable\EmailValidationService;
 use Dotenv\Dotenv;
 use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -50,7 +50,7 @@ class App
         );
         $this->container->bind(
             EmailValidationInterface::class,
-            fn() => new EmailValidationService($this->config->apiKeys['abstract_api_email_validation'])
+            fn() => new EmailValidationService($this->config->apiKeys['emailable'])
         );
 
         return $this;
