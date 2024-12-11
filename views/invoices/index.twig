@@ -9,7 +9,6 @@
         border: 1px #eee solid;
         padding: 5px;
     }
-
     .color-green {
         color: green;
     }
@@ -29,24 +28,26 @@
 <table>
     <thead>
     <tr>
-        <th>Invoice #</th>
+        <th>Invoice Number</th>
         <th>Amount</th>
         <th>Status</th>
+        <th>Due Date</th>
     </tr>
     </thead>
     <tbody>
-    <?php
-    foreach ($invoices as $invoice): ?>
-        <tr>
-            <td><?= $invoice['invoice_number'] ?></td>
-            <td>$<?= number_format($invoice['amount'], 2) ?></td>
-            <td class="<?= \App\Enums\InvoiceStatus::tryFrom($invoice['status'])->color()->getClass() ?>">
-                <?= \App\Enums\InvoiceStatus::tryFrom($invoice['status'])
-                    ->toString() ?>
-            </td>
-        </tr>
-    <?php
-    endforeach ?>
+    {% for invoice in invoices %}
+    <tr>
+        <td>{{ invoice.invoiceNumber }}</td>
+        <td>{{ invoice.amount|format_currency('EUR') }}</td>
+        <td  class="{{ invoice.statusColor }}">
+            {{ invoice.status }}
+        </td>
+        <td>
+            {{ invoice.dueDate is empty ? 'N/A' : invoice.dueDate|date('m/d/Y') }}
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No Invoices Found</td></tr>
+    {% endfor %}
     </tbody>
 </table>
-
